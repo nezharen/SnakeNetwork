@@ -4,6 +4,16 @@
 
 class QTcpServer;
 class QTimer;
+class SnakeNetworkClient;
+
+class SnakeNetworkClientLink
+{
+public:
+	SnakeNetworkClientLink(SnakeNetworkClient *client);
+	~SnakeNetworkClientLink();
+	SnakeNetworkClient *client;
+	SnakeNetworkClientLink *next;
+};
 
 class SnakeNetworkServer : QObject
 {
@@ -13,10 +23,12 @@ public:
 	~SnakeNetworkServer();
 protected slots:
 	void acceptNewConnection();
+	void closeConnection();
 	void update();
 private:
 	QTcpServer *serverSocket;
 	QTimer *updateTimer;
+	SnakeNetworkClientLink *head, *tail;
 };
 
 #endif

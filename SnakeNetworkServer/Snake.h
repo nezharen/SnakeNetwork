@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-enum Direction {up, down, left, right};
+enum Direction {directionUp, directionDown, directionLeft, directionRight};
 
 class Point;
 
@@ -22,6 +22,7 @@ public:
 	~Snake();
 	SnakeBody *head, *tail;
 	Direction direction;
+	unsigned short length;
 };
 
 #endif

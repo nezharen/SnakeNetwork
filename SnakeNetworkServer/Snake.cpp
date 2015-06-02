@@ -25,6 +25,7 @@ Snake::Snake(SnakeBody *head, SnakeBody *tail, Direction direction)
 	this->head = head;
 	this->tail = tail;
 	this->direction = direction;
+	this->length = 2;
 }
 
 Snake::~Snake()
