@@ -5,13 +5,13 @@
 SnakeBody::SnakeBody(Point *point)
 {
 	this->point = point;
-	this->front = NULL;
-	this->next = NULL;
+	front = NULL;
+	next = NULL;
 }
 
 SnakeBody::~SnakeBody()
 {
-	this->front = NULL;
+	front = NULL;
 	if (point != NULL)
 		delete point;
 	if (next != NULL)
@@ -25,7 +25,7 @@ Snake::Snake(SnakeBody *head, SnakeBody *tail, Direction direction)
 	this->head = head;
 	this->tail = tail;
 	this->direction = direction;
-	this->length = 2;
+	length = 2;
 }
 
 Snake::~Snake()

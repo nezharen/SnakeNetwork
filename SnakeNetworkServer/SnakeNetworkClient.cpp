@@ -5,9 +5,9 @@
 
 SnakeNetworkClient::SnakeNetworkClient(QTcpSocket *socket)
 {
-	this->snake = NULL;
-	this->username = NULL;
-	this->nextBlockSize = 0;
+	snake = NULL;
+	username = NULL;
+	nextBlockSize = 0;
 	this->socket = socket;
 	connect(this->socket, SIGNAL(disconnected()), this, SLOT(closeConnection()));
 	connect(this->socket, SIGNAL(readyRead()), this, SLOT(readRequest()));

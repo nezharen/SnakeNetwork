@@ -14,12 +14,14 @@ class SnakeNetworkClientDialog : public QDialog
 public:
 	SnakeNetworkClientDialog();
 	~SnakeNetworkClientDialog();
+protected slots:
+	void connectServer();
 private:
-	QLabel *usernameLabel;
-	QLineEdit *usernameEdit;
+	QLabel *serverIpLabel, *usernameLabel;
+	QLineEdit *serverIpEdit, *usernameEdit;
 	QPushButton *okButton, *exitButton;
-	QHBoxLayout *usernameLayout, *buttonLayout;
-	QVBoxLayout *mainLayout;
+	QHBoxLayout *topLayout, *buttonLayout;
+	QVBoxLayout *labelLayout, *editLayout, *mainLayout;
 };
 
 #endif

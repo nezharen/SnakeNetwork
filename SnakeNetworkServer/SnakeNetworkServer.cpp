@@ -1,6 +1,5 @@
 #include <iostream>
 #include <QtNetwork>
-#include <QTimer>
 #include "defs.h"
 #include "SnakeNetworkClient.h"
 #include "SnakeNetworkServer.h"
@@ -8,7 +7,7 @@
 SnakeNetworkClientLink::SnakeNetworkClientLink(SnakeNetworkClient *client)
 {
 	this->client = client;
-	this->next = NULL;
+	next = NULL;
 }
 
 SnakeNetworkClientLink::~SnakeNetworkClientLink()
@@ -19,7 +18,7 @@ SnakeNetworkClientLink::~SnakeNetworkClientLink()
 
 SnakeNetworkServer::SnakeNetworkServer()
 {
-	serverSocket = new QTcpServer();
+	serverSocket = new QTcpServer(this);
 	connect(serverSocket, SIGNAL(newConnection()), this, SLOT(acceptNewConnection()));
 	if (!(serverSocket->listen(QHostAddress::Any, SERVER_PORT)))
 	{
