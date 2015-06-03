@@ -11,11 +11,15 @@ class SnakeNetworkClient : public QObject
 public:
 	SnakeNetworkClient(QString *serverIp, QString *username);
 	~SnakeNetworkClient();
+signals:
+	void getOK();
 protected slots:
 	void sendRequest();
+	void readResponse();
 private:
 	QString *serverIp, *username;
 	QTcpSocket *socket;
+	unsigned short nextBlockSize;
 };
 
 #endif

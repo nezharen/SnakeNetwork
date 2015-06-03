@@ -68,6 +68,11 @@ void SnakeNetworkClientDialog::connectServer()
 	okButton->setEnabled(false);
 	okButton->setText(tr("&Connecting"));
 	SnakeNetworkClient *client = new SnakeNetworkClient(new QString(serverIpEdit->text()), new QString(usernameEdit->text()));
-	//close();
+	connect(client, SIGNAL(getOK()), this, SLOT(showMainWindow()));
+}
+
+void SnakeNetworkClientDialog::showMainWindow()
+{
+	close();
 }
 

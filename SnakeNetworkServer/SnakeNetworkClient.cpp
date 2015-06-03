@@ -1,5 +1,7 @@
+#include <iostream>
 #include <QtNetwork>
 #include <QString>
+#include "defs.h"
 #include "Snake.h"
 #include "SnakeNetworkClient.h"
 
@@ -24,6 +26,7 @@ SnakeNetworkClient::~SnakeNetworkClient()
 	}
 	if (snake != NULL)
 		delete snake;
+	std::cout << "Connection closed." << std::endl;
 }
 
 void SnakeNetworkClient::closeConnection()
@@ -33,6 +36,50 @@ void SnakeNetworkClient::closeConnection()
 
 void SnakeNetworkClient::readRequest()
 {
-	
+	QDataStream in(socket);
+	in.setVersion(QDataStream::Qt_4_3);
+	forever
+	{
+		if (nextBlockSize == 0)
+		{
+			if (socket->bytesAvailable() < sizeof(quint16))
+				break;
+			in >> nextBlockSize;
+		}
+
+		if (socket->bytesAvailable() < nextBlockSize)
+			break;
+
+		quint16 cmd;
+
+		in >> cmd;
+		switch (cmd)
+		{
+		case CMD_USERNAME:
+			if (username == NULL)
+			{
+				username = new QString;
+			}
+			in >> (*username);
+			sendOK();
+			break;
+		default:
+			break;
+		}
+
+		nextBlockSize = 0;
+	}
+}
+
+void SnakeNetworkClient::sendOK()
+{
+	QByteArray block;
+	QDataStream out(&block, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_3);
+	out << quint16(0) <<  quint16(CMD_OK);
+	out.device()->seek(0);
+	out << quint16(block.size() - sizeof(quint16));
+	socket->write(block);
+	std::cout << "OK sent." << std::endl;
 }
 

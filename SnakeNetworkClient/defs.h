@@ -7,7 +7,6 @@
 #define CMD_USERNAME 100
 #define CMD_OK 200
 #define CMD_UPDATE 300
-#define CMD_ERROR_USER_EXIST 400
 
 #endif
 

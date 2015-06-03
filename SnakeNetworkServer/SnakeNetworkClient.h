@@ -19,6 +19,8 @@ signals:
 protected slots:
 	void closeConnection();
 	void readRequest();
+protected:
+	void sendOK();
 private:
 	QTcpSocket *socket;
 	unsigned short nextBlockSize;

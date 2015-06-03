@@ -16,6 +16,7 @@ public:
 	~SnakeNetworkClientDialog();
 protected slots:
 	void connectServer();
+	void showMainWindow();
 private:
 	QLabel *serverIpLabel, *usernameLabel;
 	QLineEdit *serverIpEdit, *usernameEdit;

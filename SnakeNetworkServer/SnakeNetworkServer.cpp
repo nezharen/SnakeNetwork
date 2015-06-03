@@ -13,7 +13,7 @@ SnakeNetworkClientLink::SnakeNetworkClientLink(SnakeNetworkClient *client)
 SnakeNetworkClientLink::~SnakeNetworkClientLink()
 {
 	if (client != NULL)
-		delete client;
+		client->deleteLater();
 }
 
 SnakeNetworkServer::SnakeNetworkServer()
