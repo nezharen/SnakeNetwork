@@ -34,7 +34,7 @@ void SnakeNetworkClient::sendRequest()
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_3);
-	out << quint16(0) << quint16(CMD_USERNAME) << *username;
+	out << quint16(0) << quint16(CMD_USERNAME) << (*username);
 	out.device()->seek(0);
 	out << quint16(block.size() - sizeof(quint16));
 	socket->write(block);
@@ -64,6 +64,9 @@ void SnakeNetworkClient::readResponse()
 		{
 		case CMD_OK:
 			emit getOK();
+			break;
+		case CMD_UPDATE:
+
 			break;
 		default:
 			break;

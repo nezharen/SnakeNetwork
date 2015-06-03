@@ -4,6 +4,7 @@
 
 class QString;
 class QTcpSocket;
+class QImage;
 
 class SnakeNetworkClient : public QObject
 {
@@ -11,6 +12,7 @@ class SnakeNetworkClient : public QObject
 public:
 	SnakeNetworkClient(QString *serverIp, QString *username);
 	~SnakeNetworkClient();
+	QImage *image;
 signals:
 	void getOK();
 protected slots:

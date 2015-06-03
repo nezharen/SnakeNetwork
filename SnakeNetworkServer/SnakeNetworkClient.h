@@ -5,6 +5,7 @@
 class Snake;
 class QString;
 class QTcpSocket;
+class QByteArray;
 
 class SnakeNetworkClient : public QObject
 {
@@ -12,15 +13,16 @@ class SnakeNetworkClient : public QObject
 public:
 	SnakeNetworkClient(QTcpSocket *socket);
 	~SnakeNetworkClient();
+	void sendOK();
 	Snake *snake;
 	QString *username;
+	bool inited;
 signals:
 	void connectionClosed();
 protected slots:
 	void closeConnection();
 	void readRequest();
-protected:
-	void sendOK();
+	void updateClient(QByteArray *snapShot);
 private:
 	QTcpSocket *socket;
 	unsigned short nextBlockSize;

@@ -9,6 +9,7 @@ SnakeNetworkClient::SnakeNetworkClient(QTcpSocket *socket)
 {
 	snake = NULL;
 	username = NULL;
+	inited = false;
 	nextBlockSize = 0;
 	this->socket = socket;
 	connect(this->socket, SIGNAL(disconnected()), this, SLOT(closeConnection()));
@@ -61,7 +62,6 @@ void SnakeNetworkClient::readRequest()
 				username = new QString;
 			}
 			in >> (*username);
-			sendOK();
 			break;
 		default:
 			break;
@@ -69,6 +69,11 @@ void SnakeNetworkClient::readRequest()
 
 		nextBlockSize = 0;
 	}
+}
+
+void SnakeNetworkClient::updateClient(QByteArray *snapShot)
+{
+	socket->write(*snapShot);
 }
 
 void SnakeNetworkClient::sendOK()

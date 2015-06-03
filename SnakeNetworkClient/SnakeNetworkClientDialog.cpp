@@ -2,9 +2,12 @@
 #include <QtGui>
 #include "SnakeNetworkClient.h"
 #include "SnakeNetworkClientDialog.h"
+#include "SnakeNetworkClientMainWindow.h"
 
 SnakeNetworkClientDialog::SnakeNetworkClientDialog()
 {
+	client = NULL;
+
 	serverIpLabel = new QLabel(tr("&Server IP:"));
 	serverIpEdit = new QLineEdit;
 	serverIpEdit->setAlignment(Qt::AlignHCenter);
@@ -67,12 +70,16 @@ void SnakeNetworkClientDialog::connectServer()
 	std::cout << "Connecting server." << std::endl;
 	okButton->setEnabled(false);
 	okButton->setText(tr("&Connecting"));
-	SnakeNetworkClient *client = new SnakeNetworkClient(new QString(serverIpEdit->text()), new QString(usernameEdit->text()));
+	client = new SnakeNetworkClient(new QString(serverIpEdit->text()), new QString(usernameEdit->text()));
 	connect(client, SIGNAL(getOK()), this, SLOT(showMainWindow()));
 }
 
 void SnakeNetworkClientDialog::showMainWindow()
 {
+	SnakeNetworkClientMainWindow *mainWindow = new SnakeNetworkClientMainWindow(client);
+	mainWindow->show();
+	mainWindow->raise();
+	mainWindow->activateWindow();
 	close();
 }
 

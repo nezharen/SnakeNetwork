@@ -7,6 +7,7 @@ class QLineEdit;
 class QPushButton;
 class QHBoxLayout;
 class QVBoxLayout;
+class SnakeNetworkClient;
 
 class SnakeNetworkClientDialog : public QDialog
 {
@@ -23,6 +24,7 @@ private:
 	QPushButton *okButton, *exitButton;
 	QHBoxLayout *topLayout, *buttonLayout;
 	QVBoxLayout *labelLayout, *editLayout, *mainLayout;
+	SnakeNetworkClient *client;
 };
 
 #endif

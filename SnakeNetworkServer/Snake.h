@@ -20,9 +20,11 @@ class Snake
 public:
 	Snake(SnakeBody *head, SnakeBody *tail, Direction direction);
 	~Snake();
+	bool forward(Point *food);
 	SnakeBody *head, *tail;
 	Direction direction;
 	unsigned short length;
+	bool alive;
 };
 
 #endif
