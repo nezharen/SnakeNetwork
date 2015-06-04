@@ -30,7 +30,7 @@ SnakeNetworkServer::SnakeNetworkServer()
 	head = NULL;
 	tail = NULL;
 	clientNum = 0;
-	snapShot = NULL;
+	snapShot = new QByteArray;
 	srand(time(NULL));
 	food = newFood();
 	updateTimer = new QTimer(this);
@@ -272,11 +272,7 @@ void SnakeNetworkServer::update()
 		food = newFood();
 	}
 
-	if (snapShot != NULL)
-	{
-		delete snapShot;
-		snapShot = new QByteArray;
-	}
+	snapShot->resize(0);
 	QDataStream out(snapShot, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_3);
 	out << quint16(0) << quint16(CMD_UPDATE) << quint16(clientNum);
@@ -284,17 +280,20 @@ void SnakeNetworkServer::update()
 	p = head;
 	while (p != NULL)
 	{
-		out << p->client->username;
+		out << *(p->client->username);
 		out << quint16(p->client->snake->length);
+		std::cout << p->client->snake->length << std::endl;
 		r = p->client->snake->head;
 		while (r != NULL)
 		{
 			out << quint8(r->point->x) << quint8(r->point->y);
+			std::cout << (unsigned int)r->point->x << " " << (unsigned int)r->point->y << std::endl;
 			r = r->next;
 		}
 		p = p->next;
 	}
 	out << quint8(food->x) << quint8(food->y);
+	std::cout << (unsigned int)food->x << " " << (unsigned int)food->y << std::endl;
 	out.device()->seek(0);
 	out << quint16(snapShot->size() - sizeof(quint16));
 	emit clientUpdate(snapShot);

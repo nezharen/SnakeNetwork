@@ -15,6 +15,7 @@ public:
 	QImage *image;
 signals:
 	void getOK();
+	void updateMainWindow();
 protected slots:
 	void sendRequest();
 	void readResponse();

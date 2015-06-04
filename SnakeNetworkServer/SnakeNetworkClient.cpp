@@ -73,6 +73,7 @@ void SnakeNetworkClient::readRequest()
 
 void SnakeNetworkClient::updateClient(QByteArray *snapShot)
 {
+	std::cout << "updateClient" << std::endl;
 	socket->write(*snapShot);
 }
 

@@ -10,6 +10,10 @@ class SnakeNetworkClientMainWindow : public QMainWindow
 public:
 	SnakeNetworkClientMainWindow(SnakeNetworkClient *client);
 	~SnakeNetworkClientMainWindow();
+protected slots:
+	void updateMainWindow();
+protected:
+	void paintEvent(QPaintEvent *event);
 private:
 	SnakeNetworkClient *client;
 };
