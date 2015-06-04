@@ -23,6 +23,7 @@ public:
 	SnakeNetworkServer();
 	Snake* newSnake();
 	Point* newFood();
+	void juageAlive(Snake *x);
 	void juageAlive(Snake *p, Snake *q);
 signals:
 	void clientUpdate(QByteArray *snapShot);

@@ -179,9 +179,32 @@ void SnakeNetworkServer::juageAlive(Snake *x, Snake *y)
 	while (p != NULL)
 	{
 		if (((x->head->point->x) == (p->point->x)) && ((x->head->point->y) == (p->point->y)))
+		{
 			x->alive = false;
+			return;
+		}
 		p = p->next;
 	}
+}
+
+void SnakeNetworkServer::juageAlive(Snake *x)
+{
+	SnakeBody *p = x->head->next;
+	if (((x->head->point->x) >= MAP_LENGTH) || ((x->head->point->y) >= MAP_LENGTH))
+	{
+		x->alive = false;
+		return;
+	}
+	while (p != NULL)
+	{
+		if (((x->head->point->x) == (p->point->x)) && ((x->head->point->y) == (p->point->y)))
+		{
+			x->alive = false;
+			return;
+		}
+		p = p->next;
+	}
+	x->directionChanged = false;
 }
 
 void SnakeNetworkServer::update()
@@ -196,10 +219,7 @@ void SnakeNetworkServer::update()
 		{
 			if (p->client->snake->forward(food))
 				eaten = true;
-			if (((p->client->snake->head->point->x) >= MAP_LENGTH) || ((p->client->snake->head->point->y) >= MAP_LENGTH))
-				p->client->snake->alive = false;
-			else
-				p->client->snake->directionChanged = false;
+			juageAlive(p->client->snake);
 		}
 		p = p->next;
 	}
