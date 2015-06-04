@@ -70,6 +70,7 @@ void SnakeNetworkClientDialog::connectServer()
 	okButton->setText(tr("&Connecting"));
 	client = new SnakeNetworkClient(new QString(serverIpEdit->text()), new QString(usernameEdit->text()));
 	connect(client, SIGNAL(getOK()), this, SLOT(showMainWindow()));
+	connect(client, SIGNAL(getError()), this, SLOT(handleError()));
 }
 
 void SnakeNetworkClientDialog::showMainWindow()
@@ -79,5 +80,13 @@ void SnakeNetworkClientDialog::showMainWindow()
 	mainWindow->raise();
 	mainWindow->activateWindow();
 	close();
+}
+
+void SnakeNetworkClientDialog::handleError()
+{
+	QMessageBox::critical(this, tr("SnakeNetwork"), tr("Error: username already exists."));
+	okButton->setText(tr("&OK"));
+	okButton->setEnabled(true);
+	client->deleteLater();
 }
 

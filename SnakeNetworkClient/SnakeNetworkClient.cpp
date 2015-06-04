@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QtGui>
 #include <QtNetwork>
 #include "defs.h"
@@ -21,8 +22,7 @@ SnakeNetworkClient::~SnakeNetworkClient()
 {
 	if (socket != NULL)
 	{
-		socket->disconnectFromHost();
-		socket->waitForDisconnected();
+		socket->close();
 		delete socket;
 	}
 	if (image != NULL)
@@ -72,6 +72,9 @@ void SnakeNetworkClient::readResponse()
 		case CMD_OK:
 			emit getOK();
 			break;
+		case CMD_ERROR:
+			emit getError();
+			break;
 		case CMD_UPDATE:
 			imagePainter.setRenderHint(QPainter::Antialiasing, true);
 			imagePainter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
@@ -90,6 +93,8 @@ void SnakeNetworkClient::readResponse()
 			{
 				in >> username;
 				in >> length;
+				if (length == 0)
+					continue;
 				imagePainter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 				in >> point.x >> point.y;
 				imagePainter.drawEllipse(point.x * bodyLength, point.y * bodyLength, bodyLength, bodyLength);

@@ -8,7 +8,7 @@ class Point;
 class Snake;
 class SnakeNetworkClient;
 
-class SnakeNetworkClientLink
+class SnakeNetworkClientLink : public QObject
 {
 public:
 	SnakeNetworkClientLink(SnakeNetworkClient *client);
@@ -17,7 +17,7 @@ public:
 	SnakeNetworkClientLink *next;
 };
 
-class SnakeNetworkServer : QObject
+class SnakeNetworkServer : public QObject
 {
 	Q_OBJECT
 public:
@@ -31,6 +31,7 @@ signals:
 protected slots:
 	void acceptNewConnection();
 	void closeConnection();
+	void checkUsername();
 	void update();
 private:
 	QTcpServer *serverSocket;

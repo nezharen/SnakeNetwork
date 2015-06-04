@@ -15,7 +15,7 @@ SnakeNetworkClientLink::SnakeNetworkClientLink(SnakeNetworkClient *client)
 SnakeNetworkClientLink::~SnakeNetworkClientLink()
 {
 	if (client != NULL)
-		client->deleteLater();
+		delete client;
 }
 
 SnakeNetworkServer::SnakeNetworkServer()
@@ -74,6 +74,7 @@ void SnakeNetworkServer::acceptNewConnection()
 {
 	SnakeNetworkClient *newClient = new SnakeNetworkClient(serverSocket->nextPendingConnection());
 	connect(newClient, SIGNAL(connectionClosed()), this, SLOT(closeConnection()));
+	connect(newClient, SIGNAL(checkUsername()), this, SLOT(checkUsername()));
 	connect(this, SIGNAL(clientUpdate(QByteArray *)), newClient, SLOT(updateClient(QByteArray *)));
 	if (head == NULL)
 	{
@@ -107,13 +108,34 @@ void SnakeNetworkServer::closeConnection()
 					q->next = p->next;
 				if (p == tail)
 					tail = q;
-				delete p;
+				p->deleteLater();
 				clientNum--;
+				std::cout << "closeConnection" << std::endl;
 				break;
 			}
 			q = p;
 			p = p->next;
 		}
+	}
+}
+
+void SnakeNetworkServer::checkUsername()
+{
+	if (SnakeNetworkClient *client = qobject_cast<SnakeNetworkClient *>(sender()))
+	{
+		SnakeNetworkClientLink *p = head;
+		while (p != NULL)
+		{
+			if ((p->client != client) && (p->client->username != NULL) && (*(p->client->username)) == (*(client->username)))
+			{
+				delete client->username;
+				client->sendError();
+				return;
+			}
+			p = p->next;
+		}
+		client->inited = true;
+		client->sendOK();
 	}
 }
 
@@ -205,6 +227,7 @@ void SnakeNetworkServer::update()
 	SnakeNetworkClientLink *p, *q;
 	bool eaten = false;
 
+	std::cout << "forward" << std::endl;
 	p = head;
 	while (p != NULL)
 	{
@@ -218,6 +241,7 @@ void SnakeNetworkServer::update()
 		p = p->next;
 	}
 
+	std::cout << "juageAlive" << std::endl;
 	p = head;
 	while (p != NULL)
 	{
@@ -237,6 +261,7 @@ void SnakeNetworkServer::update()
 		p = p->next;
 	}
 
+	std::cout << "kill" << std::endl;
 	p = head;
 	while (p != NULL)
 	{
@@ -249,42 +274,47 @@ void SnakeNetworkServer::update()
 		p = p->next;
 	}
 
+	std::cout << "newSnake" << std::endl;
 	p = head;
 	while (p != NULL)
 	{
-		if ((p->client->snake == NULL) && (p->client->username != NULL))
-		{
+		if ((p->client->snake == NULL) && (p->client->inited))
 			p->client->snake = newSnake();
-			if ((!(p->client->inited)) && (p->client->snake != NULL))
-			{
-				p->client->inited = true;
-				p->client->sendOK();
-			}
-		}
 		p = p->next;
 	}
 
+	std::cout << "eaten" << std::endl;
 	if (eaten)
 	{
 		delete food;
 		food = newFood();
 	}
 
+	std::cout << "snapShot" << std::endl;
 	snapShot->resize(0);
 	QDataStream out(snapShot, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_3);
 	out << quint16(0) << quint16(CMD_UPDATE) << quint16(clientNum);
+	std::cout << clientNum << std::endl;
 	SnakeBody *r;
 	p = head;
 	while (p != NULL)
 	{
-		out << *(p->client->username);
-		out << quint16(p->client->snake->length);
-		r = p->client->snake->head;
-		while (r != NULL)
+		if (p->client->snake != NULL)
 		{
-			out << quint8(r->point->x) << quint8(r->point->y);
-			r = r->next;
+			out << *(p->client->username);
+			out << quint16(p->client->snake->length);
+			r = p->client->snake->head;
+			while (r != NULL)
+			{
+				out << quint8(r->point->x) << quint8(r->point->y);
+				r = r->next;
+			}
+		}
+		else
+		{
+			out << QString("test");
+			out << quint16(0);
 		}
 		p = p->next;
 	}
@@ -292,5 +322,6 @@ void SnakeNetworkServer::update()
 	out.device()->seek(0);
 	out << quint16(snapShot->size() - sizeof(quint16));
 	emit clientUpdate(snapShot);
+	std::cout << "updating" << std::endl;
 }
 

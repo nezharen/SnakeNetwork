@@ -12,13 +12,14 @@ class SnakeNetworkClient : public QObject
 	Q_OBJECT
 public:
 	SnakeNetworkClient(QTcpSocket *socket);
-	~SnakeNetworkClient();
 	void sendOK();
+	void sendError();
 	Snake *snake;
 	QString *username;
 	bool inited;
 signals:
 	void connectionClosed();
+	void checkUsername();
 protected slots:
 	void closeConnection();
 	void readRequest();

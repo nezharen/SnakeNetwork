@@ -17,6 +17,7 @@ public:
 	unsigned short length;
 signals:
 	void getOK();
+	void getError();
 	void updateMainWindow();
 protected slots:
 	void sendRequest();

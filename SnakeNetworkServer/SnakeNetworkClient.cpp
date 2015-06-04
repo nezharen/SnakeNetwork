@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QtNetwork>
 #include <QString>
 #include "defs.h"
@@ -13,19 +14,6 @@ SnakeNetworkClient::SnakeNetworkClient(QTcpSocket *socket)
 	this->socket = socket;
 	connect(this->socket, SIGNAL(disconnected()), this, SLOT(closeConnection()));
 	connect(this->socket, SIGNAL(readyRead()), this, SLOT(readRequest()));
-}
-
-SnakeNetworkClient::~SnakeNetworkClient()
-{
-	if (username != NULL)
-		delete username;
-	if (socket != NULL)
-	{
-		socket->close();
-		delete socket;
-	}
-	if (snake != NULL)
-		delete snake;
 }
 
 void SnakeNetworkClient::closeConnection()
@@ -60,6 +48,7 @@ void SnakeNetworkClient::readRequest()
 				username = new QString;
 			}
 			in >> (*username);
+			emit checkUsername();
 			break;
 		case CMD_UP:
 			if ((snake->direction == directionLeft) || (snake->direction == directionRight))
@@ -101,3 +90,14 @@ void SnakeNetworkClient::sendOK()
 	socket->write(block);
 }
 
+void SnakeNetworkClient::sendError()
+{
+	QByteArray block;
+	QDataStream out(&block, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_3);
+	out << quint16(0) <<  quint16(CMD_ERROR);
+	out.device()->seek(0);
+	out << quint16(block.size() - sizeof(quint16));
+	socket->write(block);
+	std::cout << "sendError" << std::endl;
+}

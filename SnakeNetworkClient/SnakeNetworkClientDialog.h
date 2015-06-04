@@ -18,6 +18,7 @@ public:
 protected slots:
 	void connectServer();
 	void showMainWindow();
+	void handleError();
 private:
 	QLabel *serverIpLabel, *usernameLabel;
 	QLineEdit *serverIpEdit, *usernameEdit;

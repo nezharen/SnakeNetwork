@@ -12,6 +12,7 @@
 #define CMD_DOWN 401
 #define CMD_LEFT 402
 #define CMD_RIGHT 403
+#define CMD_ERROR 500
 
 #endif
 
