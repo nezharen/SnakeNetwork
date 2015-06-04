@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <QtNetwork>
 #include "defs.h"
 #include "Point.h"
