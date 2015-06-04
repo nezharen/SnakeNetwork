@@ -198,6 +198,8 @@ void SnakeNetworkServer::update()
 				eaten = true;
 			if (((p->client->snake->head->point->x) >= MAP_LENGTH) || ((p->client->snake->head->point->y) >= MAP_LENGTH))
 				p->client->snake->alive = false;
+			else
+				p->client->snake->directionChanged = false;
 		}
 		p = p->next;
 	}

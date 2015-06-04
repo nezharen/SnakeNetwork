@@ -22,7 +22,7 @@ public:
 	SnakeBody *head, *tail;
 	Direction direction;
 	unsigned short length;
-	bool alive;
+	bool alive, directionChanged;
 };
 
 #endif

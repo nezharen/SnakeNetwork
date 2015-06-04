@@ -50,20 +50,32 @@ void SnakeNetworkClient::readRequest()
 			emit checkUsername();
 			break;
 		case CMD_UP:
-			if ((snake->direction == directionLeft) || (snake->direction == directionRight))
+			if ((!(snake->directionChanged)) && ((snake->direction == directionLeft) || (snake->direction == directionRight)))
+			{
 				snake->direction = directionUp;
+				snake->directionChanged = true;
+			}
 			break;
 		case CMD_DOWN:
-			if ((snake->direction == directionLeft) || (snake->direction == directionRight))
+			if ((!(snake->directionChanged)) && ((snake->direction == directionLeft) || (snake->direction == directionRight)))
+			{
 				snake->direction = directionDown;
+				snake->directionChanged = true;
+			}
 			break;
 		case CMD_LEFT:
-			if ((snake->direction == directionUp) || (snake->direction == directionDown))
+			if ((!(snake->directionChanged)) && ((snake->direction == directionUp) || (snake->direction == directionDown)))
+			{
 				snake->direction = directionLeft;
+				snake->directionChanged = true;
+			}
 			break;
 		case CMD_RIGHT:
-			if ((snake->direction == directionUp) || (snake->direction == directionDown))
+			if ((!(snake->directionChanged)) && ((snake->direction == directionUp) || (snake->direction == directionDown)))
+			{
 				snake->direction = directionRight;
+				snake->directionChanged = true;
+			}
 			break;
 		default:
 			break;

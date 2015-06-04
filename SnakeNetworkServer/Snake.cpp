@@ -18,6 +18,7 @@ Snake::Snake(SnakeBody *head, SnakeBody *tail, Direction direction)
 	this->direction = direction;
 	length = 2;
 	alive = true;
+	directionChanged = false;
 }
 
 bool Snake::forward(Point *food)
