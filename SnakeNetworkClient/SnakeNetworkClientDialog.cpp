@@ -1,4 +1,3 @@
-#include <iostream>
 #include <QtGui>
 #include "SnakeNetworkClient.h"
 #include "SnakeNetworkClientDialog.h"
@@ -67,7 +66,6 @@ SnakeNetworkClientDialog::~SnakeNetworkClientDialog()
 
 void SnakeNetworkClientDialog::connectServer()
 {
-	std::cout << "Connecting server." << std::endl;
 	okButton->setEnabled(false);
 	okButton->setText(tr("&Connecting"));
 	client = new SnakeNetworkClient(new QString(serverIpEdit->text()), new QString(usernameEdit->text()));

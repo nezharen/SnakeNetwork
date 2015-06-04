@@ -1,4 +1,3 @@
-#include <iostream>
 #include <QtNetwork>
 #include <QString>
 #include "defs.h"
@@ -27,7 +26,6 @@ SnakeNetworkClient::~SnakeNetworkClient()
 	}
 	if (snake != NULL)
 		delete snake;
-	std::cout << "Connection closed." << std::endl;
 }
 
 void SnakeNetworkClient::closeConnection()
@@ -73,7 +71,6 @@ void SnakeNetworkClient::readRequest()
 
 void SnakeNetworkClient::updateClient(QByteArray *snapShot)
 {
-	std::cout << "updateClient" << std::endl;
 	socket->write(*snapShot);
 }
 
@@ -86,6 +83,5 @@ void SnakeNetworkClient::sendOK()
 	out.device()->seek(0);
 	out << quint16(block.size() - sizeof(quint16));
 	socket->write(block);
-	std::cout << "OK sent." << std::endl;
 }
 

@@ -72,7 +72,6 @@ SnakeNetworkServer::~SnakeNetworkServer()
 
 void SnakeNetworkServer::acceptNewConnection()
 {
-	std::cout << "newConnection" << std::endl;
 	SnakeNetworkClient *newClient = new SnakeNetworkClient(serverSocket->nextPendingConnection());
 	connect(newClient, SIGNAL(connectionClosed()), this, SLOT(closeConnection()));
 	connect(this, SIGNAL(clientUpdate(QByteArray *)), newClient, SLOT(updateClient(QByteArray *)));
@@ -93,7 +92,6 @@ void SnakeNetworkServer::closeConnection()
 {
 	if (SnakeNetworkClient *client = qobject_cast<SnakeNetworkClient *>(sender()))
 	{
-		std::cout << "closeConnection"  << std::endl;
 		SnakeNetworkClientLink *p, *q;
 		p = q = head;
 		while (p != NULL)
@@ -282,18 +280,15 @@ void SnakeNetworkServer::update()
 	{
 		out << *(p->client->username);
 		out << quint16(p->client->snake->length);
-		std::cout << p->client->snake->length << std::endl;
 		r = p->client->snake->head;
 		while (r != NULL)
 		{
 			out << quint8(r->point->x) << quint8(r->point->y);
-			std::cout << (unsigned int)r->point->x << " " << (unsigned int)r->point->y << std::endl;
 			r = r->next;
 		}
 		p = p->next;
 	}
 	out << quint8(food->x) << quint8(food->y);
-	std::cout << (unsigned int)food->x << " " << (unsigned int)food->y << std::endl;
 	out.device()->seek(0);
 	out << quint16(snapShot->size() - sizeof(quint16));
 	emit clientUpdate(snapShot);

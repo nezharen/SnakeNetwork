@@ -1,4 +1,3 @@
-#include <iostream>
 #include <QtGui>
 #include <QtNetwork>
 #include "defs.h"
@@ -9,6 +8,7 @@ SnakeNetworkClient::SnakeNetworkClient(QString *serverIp, QString *username)
 {
 	this->serverIp = serverIp;
 	this->username = username;
+	length = 0;
 	image = new QImage(IMAGE_LENGTH, IMAGE_LENGTH, QImage::Format_ARGB32_Premultiplied);
 	nextBlockSize = 0;
 	socket = new QTcpSocket(this);
@@ -35,7 +35,6 @@ SnakeNetworkClient::~SnakeNetworkClient()
 
 void SnakeNetworkClient::sendRequest()
 {
-	std::cout << "Sending request." << std::endl;
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_3);
@@ -43,12 +42,10 @@ void SnakeNetworkClient::sendRequest()
 	out.device()->seek(0);
 	out << quint16(block.size() - sizeof(quint16));
 	socket->write(block);
-	std::cout << "Request sended." << std::endl;
 }
 
 void SnakeNetworkClient::readResponse()
 {
-	std::cout << "readResponse" << std::endl;
 	QDataStream in(socket);
 	in.setVersion(QDataStream::Qt_4_3);
 	forever
@@ -76,32 +73,42 @@ void SnakeNetworkClient::readResponse()
 			emit getOK();
 			break;
 		case CMD_UPDATE:
-			std::cout << "Update." << std::endl;
 			imagePainter.setRenderHint(QPainter::Antialiasing, true);
-			imagePainter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap));
+			imagePainter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
 			imagePainter.setBrush(QBrush(Qt::white, Qt::SolidPattern));
 			imagePainter.eraseRect(image->rect());
 			imagePainter.drawRect(image->rect());
-			imagePainter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+			imagePainter.setPen(QPen(Qt::lightGray, 1, Qt::DashLine, Qt::FlatCap));
+			for (int i = 0; i < IMAGE_LENGTH; i += bodyLength)
+			{
+				imagePainter.drawLine(i, 0, i, IMAGE_LENGTH);
+				imagePainter.drawLine(0, i, IMAGE_LENGTH, i);
+			}
+			imagePainter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
 			in >> clientNum;
-			std::cout << clientNum << std::endl;
 			for (int i = 0; i < clientNum; i++)
 			{
 				in >> username;
-				std::cout << username.toAscii().constData() << std::endl;
 				in >> length;
-				std::cout << length << std::endl;
-				for (int j = 0; j < length; j++)
+				imagePainter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+				in >> point.x >> point.y;
+				imagePainter.drawEllipse(point.x * bodyLength, point.y * bodyLength, bodyLength, bodyLength);
+				if (this->username == username)
+				{
+					imagePainter.setBrush(QBrush(Qt::black, Qt::SolidPattern));
+					this->length = length;
+				}
+				else
+					imagePainter.setBrush(QBrush(Qt::darkGray, Qt::SolidPattern));
+				for (int j = 1; j < length; j++)
 				{
 					in >> point.x >> point.y;
-					std::cout << (unsigned int)point.x << " " << (unsigned int)point.y << std::endl;
 					imagePainter.drawEllipse(point.x * bodyLength, point.y * bodyLength, bodyLength, bodyLength);
 				}
 			}
 			imagePainter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 			in >> point.x >> point.y;
-			std::cout << (unsigned int)point.x << " " << (unsigned int)point.y << std::endl;
-			imagePainter.drawRect(point.x * bodyLength, point.y * bodyLength, bodyLength, bodyLength);
+			imagePainter.drawEllipse(point.x * bodyLength, point.y * bodyLength, bodyLength, bodyLength);
 			imagePainter.end();
 			emit updateMainWindow();
 			break;

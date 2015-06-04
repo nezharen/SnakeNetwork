@@ -12,7 +12,9 @@ class SnakeNetworkClient : public QObject
 public:
 	SnakeNetworkClient(QString *serverIp, QString *username);
 	~SnakeNetworkClient();
+	QString *username;
 	QImage *image;
+	unsigned short length;
 signals:
 	void getOK();
 	void updateMainWindow();
@@ -20,7 +22,7 @@ protected slots:
 	void sendRequest();
 	void readResponse();
 private:
-	QString *serverIp, *username;
+	QString *serverIp;
 	QTcpSocket *socket;
 	unsigned short nextBlockSize;
 };

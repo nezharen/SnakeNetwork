@@ -24,6 +24,9 @@ void SnakeNetworkClientMainWindow::updateMainWindow()
 void SnakeNetworkClientMainWindow::paintEvent(QPaintEvent *event)
 {
 	QPainter windowPainter(this);
+	windowPainter.setRenderHint(QPainter::Antialiasing, true);
 	windowPainter.drawImage(20, 20, *(client->image));
+	windowPainter.drawText(650, 40, tr("Username: %1").arg(*(client->username)));
+	windowPainter.drawText(650, 70, tr("Score: %1").arg(client->length));
 }
 
