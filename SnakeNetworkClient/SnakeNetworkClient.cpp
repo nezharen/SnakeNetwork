@@ -95,11 +95,11 @@ void SnakeNetworkClient::readResponse()
 				imagePainter.drawEllipse(point.x * bodyLength, point.y * bodyLength, bodyLength, bodyLength);
 				if (this->username == username)
 				{
-					imagePainter.setBrush(QBrush(Qt::black, Qt::SolidPattern));
+					imagePainter.setBrush(QBrush(Qt::darkYellow, Qt::SolidPattern));
 					this->length = length;
 				}
 				else
-					imagePainter.setBrush(QBrush(Qt::darkGray, Qt::SolidPattern));
+					imagePainter.setBrush(QBrush(Qt::gray, Qt::SolidPattern));
 				for (int j = 1; j < length; j++)
 				{
 					in >> point.x >> point.y;
@@ -118,5 +118,16 @@ void SnakeNetworkClient::readResponse()
 
 		nextBlockSize = 0;
 	}
+}
+
+void SnakeNetworkClient::changeDirection(const unsigned short &cmd)
+{
+	QByteArray block;
+	QDataStream out(&block, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_3);
+	out << quint16(0) << quint16(cmd);
+	out.device()->seek(0);
+	out << quint16(block.size() - sizeof(quint16));
+	socket->write(block);
 }
 

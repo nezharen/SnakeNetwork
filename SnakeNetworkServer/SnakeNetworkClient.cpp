@@ -61,6 +61,22 @@ void SnakeNetworkClient::readRequest()
 			}
 			in >> (*username);
 			break;
+		case CMD_UP:
+			if ((snake->direction == directionLeft) || (snake->direction == directionRight))
+				snake->direction = directionUp;
+			break;
+		case CMD_DOWN:
+			if ((snake->direction == directionLeft) || (snake->direction == directionRight))
+				snake->direction = directionDown;
+			break;
+		case CMD_LEFT:
+			if ((snake->direction == directionUp) || (snake->direction == directionDown))
+				snake->direction = directionLeft;
+			break;
+		case CMD_RIGHT:
+			if ((snake->direction == directionUp) || (snake->direction == directionDown))
+				snake->direction = directionRight;
+			break;
 		default:
 			break;
 		}

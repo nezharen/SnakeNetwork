@@ -21,6 +21,7 @@ signals:
 protected slots:
 	void sendRequest();
 	void readResponse();
+	void changeDirection(const unsigned short &cmd);
 private:
 	QString *serverIp;
 	QTcpSocket *socket;

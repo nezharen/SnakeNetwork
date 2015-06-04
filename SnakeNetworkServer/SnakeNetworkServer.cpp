@@ -35,7 +35,7 @@ SnakeNetworkServer::SnakeNetworkServer()
 	food = newFood();
 	updateTimer = new QTimer(this);
 	connect(updateTimer, SIGNAL(timeout()), this, SLOT(update()));
-	updateTimer->start(1000);
+	updateTimer->start(500);
 	std::cout << "SnakeNetworkServer start successful." << std::endl;
 }
 
