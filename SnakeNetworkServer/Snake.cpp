@@ -9,15 +9,6 @@ SnakeBody::SnakeBody(Point *point)
 	next = NULL;
 }
 
-SnakeBody::~SnakeBody()
-{
-	front = NULL;
-	if (point != NULL)
-		delete point;
-	if (next != NULL)
-		delete next;
-}
-
 Snake::Snake(SnakeBody *head, SnakeBody *tail, Direction direction)
 {
 	head->next = tail;
@@ -27,13 +18,6 @@ Snake::Snake(SnakeBody *head, SnakeBody *tail, Direction direction)
 	this->direction = direction;
 	length = 2;
 	alive = true;
-}
-
-Snake::~Snake()
-{
-	if (head != NULL)
-		delete head;
-	this->tail = NULL;
 }
 
 bool Snake::forward(Point *food)
@@ -67,7 +51,6 @@ bool Snake::forward(Point *food)
 	else
 	{
 		tail = tail->front;
-		delete (tail->next);
 		tail->next = NULL;
 		return false;
 	}

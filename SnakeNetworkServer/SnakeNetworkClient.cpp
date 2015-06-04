@@ -1,4 +1,3 @@
-#include <iostream>
 #include <QtNetwork>
 #include <QString>
 #include "defs.h"
@@ -99,5 +98,5 @@ void SnakeNetworkClient::sendError()
 	out.device()->seek(0);
 	out << quint16(block.size() - sizeof(quint16));
 	socket->write(block);
-	std::cout << "sendError" << std::endl;
 }
+

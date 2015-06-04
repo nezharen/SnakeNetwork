@@ -6,7 +6,3 @@ Point::Point(unsigned char x, unsigned char y)
 	this->y = y;
 }
 
-Point::~Point()
-{
-}
-

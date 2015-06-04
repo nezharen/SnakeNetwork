@@ -9,7 +9,6 @@ class SnakeBody
 {
 public:
 	SnakeBody(Point *point);
-	~SnakeBody();
 	Point *point;
 	SnakeBody *front;
 	SnakeBody *next;
@@ -19,7 +18,6 @@ class Snake
 {
 public:
 	Snake(SnakeBody *head, SnakeBody *tail, Direction direction);
-	~Snake();
 	bool forward(Point *food);
 	SnakeBody *head, *tail;
 	Direction direction;

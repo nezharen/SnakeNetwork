@@ -11,7 +11,6 @@ class SnakeNetworkClient : public QObject
 	Q_OBJECT
 public:
 	SnakeNetworkClient(QString *serverIp, QString *username);
-	~SnakeNetworkClient();
 	QString *username;
 	QImage *image;
 	unsigned short length;

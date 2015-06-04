@@ -9,7 +9,6 @@ class SnakeNetworkClientMainWindow : public QMainWindow
 	Q_OBJECT
 public:
 	SnakeNetworkClientMainWindow(SnakeNetworkClient *client);
-	~SnakeNetworkClientMainWindow();
 signals:
 	void changeDirection(const unsigned short &cmd);
 protected slots:

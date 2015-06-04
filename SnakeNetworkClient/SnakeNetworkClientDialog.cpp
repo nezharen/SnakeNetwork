@@ -49,21 +49,6 @@ SnakeNetworkClientDialog::SnakeNetworkClientDialog()
 	setFixedSize(sizeHint());
 }
 
-SnakeNetworkClientDialog::~SnakeNetworkClientDialog()
-{
-	delete serverIpLabel;
-	delete serverIpEdit;
-	delete usernameLabel;
-	delete usernameEdit;
-	delete okButton;
-	delete exitButton;
-	delete labelLayout;
-	delete editLayout;
-	delete topLayout;
-	delete buttonLayout;
-	delete mainLayout;
-}
-
 void SnakeNetworkClientDialog::connectServer()
 {
 	okButton->setEnabled(false);
@@ -87,6 +72,6 @@ void SnakeNetworkClientDialog::handleError()
 	QMessageBox::critical(this, tr("SnakeNetwork"), tr("Error: username already exists."));
 	okButton->setText(tr("&OK"));
 	okButton->setEnabled(true);
-	client->deleteLater();
+	client = NULL;
 }
 

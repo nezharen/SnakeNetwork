@@ -5,7 +5,6 @@ class Point
 {
 public:
 	Point(unsigned char x = -1, unsigned char y = -1);
-	~Point();
 	unsigned char x, y;
 };
 

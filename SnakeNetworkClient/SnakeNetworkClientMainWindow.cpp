@@ -12,12 +12,6 @@ SnakeNetworkClientMainWindow::SnakeNetworkClientMainWindow(SnakeNetworkClient *c
 	setWindowTitle(tr("SnakeNetwork"));
 }
 
-SnakeNetworkClientMainWindow::~SnakeNetworkClientMainWindow()
-{
-	if (client != NULL)
-		delete client;
-}
-
 void SnakeNetworkClientMainWindow::updateMainWindow()
 {
 	update();

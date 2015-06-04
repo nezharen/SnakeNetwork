@@ -14,7 +14,6 @@ class SnakeNetworkClientDialog : public QDialog
 	Q_OBJECT
 public:
 	SnakeNetworkClientDialog();
-	~SnakeNetworkClientDialog();
 protected slots:
 	void connectServer();
 	void showMainWindow();

@@ -8,11 +8,10 @@ class Point;
 class Snake;
 class SnakeNetworkClient;
 
-class SnakeNetworkClientLink : public QObject
+class SnakeNetworkClientLink
 {
 public:
 	SnakeNetworkClientLink(SnakeNetworkClient *client);
-	~SnakeNetworkClientLink();
 	SnakeNetworkClient *client;
 	SnakeNetworkClientLink *next;
 };
@@ -22,7 +21,6 @@ class SnakeNetworkServer : public QObject
 	Q_OBJECT
 public:
 	SnakeNetworkServer();
-	~SnakeNetworkServer();
 	Snake* newSnake();
 	Point* newFood();
 	void juageAlive(Snake *p, Snake *q);

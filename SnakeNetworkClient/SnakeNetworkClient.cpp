@@ -18,21 +18,6 @@ SnakeNetworkClient::SnakeNetworkClient(QString *serverIp, QString *username)
 	socket->connectToHost(*(this->serverIp), SERVER_PORT);
 }
 
-SnakeNetworkClient::~SnakeNetworkClient()
-{
-	if (socket != NULL)
-	{
-		socket->close();
-		delete socket;
-	}
-	if (image != NULL)
-		delete image;
-	if (username != NULL)
-		delete username;
-	if (serverIp != NULL)
-		delete serverIp;
-}
-
 void SnakeNetworkClient::sendRequest()
 {
 	QByteArray block;
